@@ -20,7 +20,7 @@ class DnsblTest extends TestCase {
 
     function setup() {
         $dnsbl = new Dnsbl();
-        $this->defaultCount = count($dnsbl->getBlacklists());
+        $this->defaultCount = count($dnsbl->getBlackLists());
     }
 
     /**
@@ -28,7 +28,7 @@ class DnsblTest extends TestCase {
      */
     function testServerConst() {
         $dnsbl = new Dnsbl();
-        $this->assertTrue(is_array($dnsbl->getBlacklists()));
+        $this->assertTrue(is_array($dnsbl->getBlackLists()));
     }
 
     /**
@@ -44,9 +44,9 @@ class DnsblTest extends TestCase {
      */
     function testAddBlacklist() {
         $dnsbl = new Dnsbl(array('foo.bar.com'));
-        $this->assertEquals(1, count($dnsbl->getBlacklists()));
+        $this->assertEquals(1, count($dnsbl->getBlackLists()));
         $dnsbl->addBlacklist('bar.foo.com');
-        $this->assertEquals(array('foo.bar.com', 'bar.foo.com'), $dnsbl->getBlacklists());
+        $this->assertEquals(array('foo.bar.com', 'bar.foo.com'), $dnsbl->getBlackLists());
     }
 
     /**
@@ -54,7 +54,7 @@ class DnsblTest extends TestCase {
      */
     function testMergeBlacklist() {
         $dnsbl = new Dnsbl(array('foo.bar.com', 'bar.foo.com'), true);
-        $this->assertEquals($this->defaultCount + 2, count($dnsbl->getBlacklists()));
+        $this->assertEquals($this->defaultCount + 2, count($dnsbl->getBlackLists()));
     }
 
     /**

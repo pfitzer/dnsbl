@@ -19,7 +19,7 @@ class Dnsbl
     /**
      * @var array
      */
-    private $_blacklists = array(
+    private $_blackLists = array(
         "all.s5h.net",
         "b.barracudacentral.org",
         "bl.emailbasura.org",
@@ -94,9 +94,9 @@ class Dnsbl
     public function __construct($blacklists = null, $append = false) {
         if (is_array($blacklists)) {
             if(!$append) {
-                $this->_blacklists = $blacklists;
+                $this->_blackLists = $blacklists;
             } else {
-                $this->_blacklists = array_merge($this->_blacklists, $blacklists);
+                $this->_blackLists = array_merge($this->_blackLists, $blacklists);
             }
         }
     }
@@ -105,14 +105,14 @@ class Dnsbl
      * @param string $blacklist
      */
     public function addBlacklist($blacklist) {
-        array_push($this->_blacklists, $blacklist);
+        array_push($this->_blackLists, $blacklist);
     }
 
     /**
      * @return array
      */
-    public function getBlacklists() {
-        return $this->_blacklists;
+    public function getBlackLists() {
+        return $this->_blackLists;
     }
 
     /**
@@ -120,11 +120,11 @@ class Dnsbl
      *
      * e.g.: 127.0.0.1 => 1.0.0.127
      *
-     * @param string $ip
+     * @param string $lookupIp
      * @return string
      */
-    public function reverseIp($ip) {
-        $parts = explode('.', $ip);
+    public function reverseIp($lookupIp) {
+        $parts = explode('.', $lookupIp);
         return implode('.', array_reverse($parts));
     }
 
@@ -134,14 +134,14 @@ class Dnsbl
      * returns array with the blacklist as key and the listing as boolean value
      *
      *
-     * @param string $ip
+     * @param string $lookupIp
      * @param string $type
      * @return array
      */
-    public function lookup($ip, $type='A') {
+    public function lookup($lookupIp, $type='A') {
         $result = array();
-        foreach ($this->_blacklists as $bl) {
-            $res = checkdnsrr($this->reverseIp($ip). '.' . $bl, $type);
+        foreach ($this->_blackLists as $bl) {
+            $res = checkdnsrr($this->reverseIp($lookupIp). '.' . $bl, $type);
             $result[$bl] = $res;
         }
 
