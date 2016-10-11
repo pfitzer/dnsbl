@@ -85,11 +85,19 @@ class Dnsbl
     );
 
     /**
+     * if you give an array of blacklists the internal ones will be ignored
+     * set $append to true to add your list to the internal
+     *
      * @param array $blacklists
+     * @param boolean $append
      */
-    public function __construct($blacklists = null) {
+    public function __construct($blacklists = null, $append = false) {
         if (is_array($blacklists)) {
-            $this->_blacklists = $blacklists;
+            if(!$append) {
+                $this->_blacklists = $blacklists;
+            } else {
+                $this->_blacklists = array_merge($this->_blacklists, $blacklists);
+            }
         }
     }
 
@@ -108,7 +116,12 @@ class Dnsbl
     }
 
     /**
+     * reverse the ip
+     *
+     * e.g.: 127.0.0.1 => 1.0.0.127
+     *
      * @param string $ip
+     * @return string
      */
     public function reverseIp($ip) {
         $parts = explode('.', $ip);
@@ -117,6 +130,8 @@ class Dnsbl
 
     /**
      * check a single ip for blacklisted
+     *
+     * returns array with the blacklist as key and the listing as boolean value
      *
      *
      * @param string $ip
@@ -127,7 +142,7 @@ class Dnsbl
         $result = array();
         foreach ($this->_blacklists as $bl) {
             $res = checkdnsrr($this->reverseIp($ip). '.' . $bl, $type);
-            array_push($result, array($bl => $res));
+            $result[$bl] = $res;
         }
 
         return $result;
