@@ -2,7 +2,7 @@
   "name": "pfitzer/dnsbl",
   "description": "check ip for blacklisting",
   "type": "library",
-  "keywords": "dnsbl",
+  "keywords": ["dnsbl"],
   "license": "MIT",
   "authors": [
     {
@@ -10,6 +10,9 @@
       "email": "michael@mp-development.de"
     }
   ],
+  "support": {
+    "issues": "https://github.com/pfitzer/dnsbl/issues"
+  },
   "minimum-stability": "dev",
   "require": {
     "php": ">=5.6.0"
@@ -19,5 +22,11 @@
   },
   "autoload": {
     "classmap": ["src/"]
-  }
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/pfitzer/dnsbl"
+    }
+  ]
 }
