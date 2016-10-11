@@ -9,10 +9,10 @@ namespace DnsBl;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_TestCase;
 use phpmock\phpunit\PHPMock;
 
-class DnsblTest extends TestCase {
+class DnsblTest extends PHPUnit_Framework_TestCase {
 
     use PHPMock;
 

@@ -19,7 +19,7 @@ class Dnsbl
     /**
      * @var array
      */
-    private $_blackLists = array(
+    private $blackLists = array(
         "all.s5h.net",
         "b.barracudacentral.org",
         "bl.emailbasura.org",
@@ -94,9 +94,9 @@ class Dnsbl
     public function __construct($blacklists = null, $append = false) {
         if (is_array($blacklists)) {
             if(!$append) {
-                $this->_blackLists = $blacklists;
+                $this->blackLists = $blacklists;
             } else {
-                $this->_blackLists = array_merge($this->_blackLists, $blacklists);
+                $this->blackLists = array_merge($this->blackLists, $blacklists);
             }
         }
     }
@@ -105,14 +105,14 @@ class Dnsbl
      * @param string $blacklist
      */
     public function addBlacklist($blacklist) {
-        array_push($this->_blackLists, $blacklist);
+        array_push($this->blackLists, $blacklist);
     }
 
     /**
      * @return array
      */
     public function getBlackLists() {
-        return $this->_blackLists;
+        return $this->blackLists;
     }
 
     /**
@@ -140,7 +140,7 @@ class Dnsbl
      */
     public function lookup($lookupIp, $type='A') {
         $result = array();
-        foreach ($this->_blackLists as $bl) {
+        foreach ($this->blackLists as $bl) {
             $res = checkdnsrr($this->reverseIp($lookupIp). '.' . $bl, $type);
             $result[$bl] = $res;
         }
