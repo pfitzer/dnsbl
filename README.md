@@ -3,6 +3,14 @@
 ## DNSBL
 check ip for blacklisting
 
+install
+-------
+composer require pfitzer/dnsbl
+```
+"require": {
+"pfitzer/dnsbl": "*"
+}
+```
 usage
 -----
 ```
