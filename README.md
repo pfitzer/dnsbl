@@ -8,7 +8,7 @@ install
 composer require pfitzer/dnsbl
 ```
 "require": {
-"pfitzer/dnsbl": "*"
+    "pfitzer/dnsbl": "*"
 }
 ```
 usage
@@ -19,8 +19,15 @@ $dnsbl = new Dnsbl();
 $result = $dnsbl->lookup('127.0.0.1');
 ```
 
-testing
--------
+contribute
+----------
+feel free to do so
+
+#### install dev dependencies
+```
+composer install
+```
+#### run unit tests
 ```
 phpunit --configuration phpunit.xml
 ```
