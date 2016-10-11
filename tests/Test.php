@@ -74,4 +74,12 @@ class DnsblTest extends PHPUnit_Framework_TestCase {
         $res = $dnsbl->lookup('127.0.0.1');
         $this->assertEquals(array('foo.bar.com' => true), $res);
     }
+
+    function testLookupReturnNotBoolean() {
+        $dnsrr = $this->getFunctionMock(__NAMESPACE__, 'checkdnsrr');
+        $dnsrr->expects($this->once())->willReturn('foo');
+        $dnsbl = new Dnsbl(array('foo.bar.com'));
+        $res = $dnsbl->lookup('127.0.0.1');
+        $this->assertEquals(array(), $res);
+    }
 }

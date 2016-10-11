@@ -148,7 +148,9 @@ class Dnsbl
         $result = array();
         foreach ($this->blackLists as $bl) {
             $res = checkdnsrr($this->reverseIp($lookupIp). '.' . $bl, $type);
-            $result[$bl] = $res;
+            if (is_bool($res)) {
+                $result[$bl] = $res;
+            }
         }
 
         return $result;
