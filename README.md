@@ -17,7 +17,11 @@ usage
 ```
 $dnsbl = new Dnsbl();
 
-$result = $dnsbl->lookup('127.0.0.1');
+try {
+    $result = $dnsbl->lookup('127.0.0.1');
+} catch (\InvalidArgumentException $e) {
+    # do something
+}
 ```
 
 contribute

@@ -54,6 +54,8 @@ class DnsblTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(1, count($dnsbl->getBlackLists()));
         $dnsbl->addBlacklist('bar.foo.com');
         $this->assertEquals(array('foo.bar.com', 'bar.foo.com'), $dnsbl->getBlackLists());
+        $dnsbl->addBlacklist(true);
+        $this->assertEquals(array('foo.bar.com', 'bar.foo.com'), $dnsbl->getBlackLists());
     }
 
     /**
@@ -81,5 +83,14 @@ class DnsblTest extends PHPUnit_Framework_TestCase {
         $dnsbl = new Dnsbl(array('foo.bar.com'));
         $res = $dnsbl->lookup('127.0.0.1');
         $this->assertEquals(array(), $res);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage "aa" is not a valid ip address!
+     */
+    function testValideIp() {
+        $dnsbl = new Dnsbl();
+        $dnsbl->reverseIp('aa');
     }
 }

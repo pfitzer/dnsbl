@@ -111,7 +111,9 @@ class Dnsbl
      * @param string $blacklist
      */
     public function addBlacklist($blacklist) {
-        array_push($this->blackLists, $blacklist);
+        if (is_string($blacklist)) {
+            array_push($this->blackLists, $blacklist);
+        }
     }
 
     /**
@@ -130,6 +132,7 @@ class Dnsbl
      * @return string
      */
     public function reverseIp($lookupIp) {
+        $this->validateIp($lookupIp);
         $parts = explode('.', $lookupIp);
         return implode('.', array_reverse($parts));
     }
@@ -145,6 +148,7 @@ class Dnsbl
      * @return array
      */
     public function lookup($lookupIp, $type='A') {
+        $this->validateIp($lookupIp);
         $result = array();
         foreach ($this->blackLists as $bl) {
             $res = checkdnsrr($this->reverseIp($lookupIp). '.' . $bl, $type);
@@ -154,5 +158,17 @@ class Dnsbl
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $lookupIp
+     * @return bool
+     * @throws \InvalidArgumentException
+     */
+    private function validateIp($lookupIp) {
+        $valid = filter_var($lookupIp, FILTER_VALIDATE_IP);
+        if (!$valid) {
+            throw new \InvalidArgumentException(sprintf('"%s" is not a valid ip address!', $lookupIp));
+        }
     }
 }
