@@ -148,7 +148,6 @@ class Dnsbl
      * @return array
      */
     public function lookup($lookupIp, $type='A') {
-        $this->validateIp($lookupIp);
         $result = array();
         foreach ($this->blackLists as $bl) {
             $res = checkdnsrr($this->reverseIp($lookupIp). '.' . $bl, $type);
