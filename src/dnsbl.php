@@ -1,5 +1,9 @@
 <?php
 /**
+ * @author Michael Pfister <michael@mp-development.de>
+ * @copyright (c) 2016, Michael Pfister
+ * @license MIT
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
  * ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
  * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
@@ -117,6 +121,8 @@ class Dnsbl
     }
 
     /**
+     * add a single blacklist
+     *
      * @return array
      */
     public function getBlackLists() {
@@ -125,7 +131,6 @@ class Dnsbl
 
     /**
      * reverse the ip
-     *
      * e.g.: 127.0.0.1 => 1.0.0.127
      *
      * @param string $lookupIp
@@ -139,9 +144,7 @@ class Dnsbl
 
     /**
      * check a single ip for blacklisted
-     *
      * returns array with the blacklist as key and the listing as boolean value
-     *
      *
      * @param string $lookupIp
      * @param string $type
@@ -160,6 +163,8 @@ class Dnsbl
     }
 
     /**
+     * validates the given ip
+     *
      * @param string $lookupIp
      * @return bool
      * @throws \InvalidArgumentException
