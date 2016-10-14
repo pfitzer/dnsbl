@@ -27,6 +27,8 @@ namespace DnsBl;
 class Dnsbl
 {
     /**
+     * list of checked blacklist providers
+     *
      * @var array
      */
     private $blackLists = array(
@@ -112,6 +114,8 @@ class Dnsbl
     }
 
     /**
+     * add a single blacklist
+     *
      * @param string $blacklist
      */
     public function addBlacklist($blacklist) {
@@ -121,7 +125,7 @@ class Dnsbl
     }
 
     /**
-     * add a single blacklist
+     * get list of used blacklist providers
      *
      * @return array
      */
