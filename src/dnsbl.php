@@ -123,8 +123,8 @@ class Dnsbl
         try {
             $this->validateBlacklist($blacklist);
             array_push($this->blackLists, $blacklist);
-        } catch (Exception $e) {
-            throw e;
+        } catch (\InvalidArgumentException $e) {
+            throw new \InvalidArgumentException($e->getMessage());
         }
     }
 
