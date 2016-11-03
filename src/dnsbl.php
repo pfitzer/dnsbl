@@ -117,10 +117,14 @@ class Dnsbl
      * add a single blacklist
      *
      * @param string $blacklist
+     * @throws \InvalidArgumentException
      */
     public function addBlacklist($blacklist) {
-        if (is_string($blacklist)) {
+        try {
+            $this->validateBlacklist($blacklist);
             array_push($this->blackLists, $blacklist);
+        } catch (Exception $e) {
+            throw e;
         }
     }
 
@@ -157,9 +161,14 @@ class Dnsbl
     public function lookup($lookupIp, $type='A') {
         $result = array();
         foreach ($this->blackLists as $bl) {
-            $res = checkdnsrr($this->reverseIp($lookupIp). '.' . $bl, $type);
-            if (is_bool($res)) {
-                $result[$bl] = $res;
+            try {
+                $this->validateBlacklist($bl);
+                $res = checkdnsrr($this->reverseIp($lookupIp) . '.' . $bl, $type);
+                if (is_bool($res)) {
+                    $result[$bl] = $res;
+                }
+            } catch (\InvalidArgumentException $e) {
+                continue;
             }
         }
 
@@ -177,6 +186,19 @@ class Dnsbl
         $valid = filter_var($lookupIp, FILTER_VALIDATE_IP);
         if (!$valid) {
             throw new \InvalidArgumentException(sprintf('"%s" is not a valid ip address!', $lookupIp));
+        }
+    }
+
+    /**
+     * @param string $blacklist
+     * @throws \InvalidArgumentException
+     */
+    private function validateBlacklist($blacklist) {
+        if (filter_var($blacklist, FILTER_VALIDATE_URL)) {
+            throw new \InvalidArgumentException('It`s not allowed to use http or https in blacklist name!');
+        }
+        if (!is_string($blacklist)) {
+            throw new \InvalidArgumentException('Blacklist has to be a string!');
         }
     }
 }

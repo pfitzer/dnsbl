@@ -58,8 +58,24 @@ class DnsblTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(1, count($dnsbl->getBlackLists()));
         $dnsbl->addBlacklist('bar.foo.com');
         $this->assertEquals(array('foo.bar.com', 'bar.foo.com'), $dnsbl->getBlackLists());
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Blacklist has to be a string!
+     */
+    function testAddBlacklistNoStringException() {
+        $dnsbl = new Dnsbl();
         $dnsbl->addBlacklist(true);
-        $this->assertEquals(array('foo.bar.com', 'bar.foo.com'), $dnsbl->getBlackLists());
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage It`s not allowed to use http or https in blacklist name!
+     */
+    function testAddBlacklistWrongFormatException() {
+        $dnsbl = new Dnsbl();
+        $dnsbl->addBlacklist('http://test.com');
     }
 
     /**
@@ -84,7 +100,7 @@ class DnsblTest extends PHPUnit_Framework_TestCase {
     function testLookupReturnNotBoolean() {
         $dnsrr = $this->getFunctionMock(__NAMESPACE__, 'checkdnsrr');
         $dnsrr->expects($this->once())->willReturn('foo');
-        $dnsbl = new Dnsbl(array('foo.bar.com'));
+        $dnsbl = new Dnsbl(array('foo.bar.com', 'http://foo.bar.com'));
         $res = $dnsbl->lookup('127.0.0.1');
         $this->assertEquals(array(), $res);
     }
