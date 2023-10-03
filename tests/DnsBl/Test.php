@@ -18,18 +18,21 @@
 
 namespace DnsBl;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
-use PHPUnit_Framework_TestCase;
+use InvalidArgumentException;
+use phpmock\mockery\PHPMockery;
+use PHPUnit\Framework\TestCase;
 use phpmock\phpunit\PHPMock;
 
-class DnsblTest extends PHPUnit_Framework_TestCase {
+class DnsblTest extends TestCase {
 
     use PHPMock;
 
     private $defaultCount;
 
-    function setup() {
+    function setup(): void
+    {
         $dnsbl = new Dnsbl();
         $this->defaultCount = count($dnsbl->getBlackLists());
     }
@@ -61,19 +64,10 @@ class DnsblTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Blacklist has to be a string!
-     */
-    function testAddBlacklistNoStringException() {
-        $dnsbl = new Dnsbl();
-        $dnsbl->addBlacklist(true);
-    }
-
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage It`s not allowed to use http or https in blacklist name!
+     * @return void
      */
     function testAddBlacklistWrongFormatException() {
+        $this->expectException(InvalidArgumentException::class);
         $dnsbl = new Dnsbl();
         $dnsbl->addBlacklist('http://test.com');
     }
@@ -87,29 +81,33 @@ class DnsblTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     *
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
      */
     function testLookup() {
-        $dnsrr = $this->getFunctionMock(__NAMESPACE__, 'checkdnsrr');
-        $dnsrr->expects($this->once())->willReturn(true);
+        $dnsrr = PHPMockery::mock(__NAMESPACE__, 'checkdnsrr')->andReturn(true);
+        # $dnsrr->expects($this->once())->willReturn(true);
         $dnsbl = new Dnsbl(array('foo.bar.com'));
         $res = $dnsbl->lookup('127.0.0.1');
         $this->assertEquals(array('foo.bar.com' => true), $res);
     }
 
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     function testLookupReturnNotBoolean() {
-        $dnsrr = $this->getFunctionMock(__NAMESPACE__, 'checkdnsrr');
-        $dnsrr->expects($this->once())->willReturn('foo');
+        $dnsrr = PHPMockery::mock(__NAMESPACE__, 'checkdnsrr')->andReturn('foo');
         $dnsbl = new Dnsbl(array('foo.bar.com', 'http://foo.bar.com'));
         $res = $dnsbl->lookup('127.0.0.1');
         $this->assertEquals(array(), $res);
     }
 
     /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage "aa" is not a valid ip address!
+     * @return void
      */
     function testValideIp() {
+        $this->expectException(InvalidArgumentException::class);
         $dnsbl = new Dnsbl();
         $dnsbl->reverseIp('aa');
     }

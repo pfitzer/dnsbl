@@ -100,10 +100,10 @@ class Dnsbl
      * if you give an array of blacklists the internal ones will be ignored
      * set $append to true to add your list to the internal
      *
-     * @param array $blacklists
+     * @param array|null $blacklists
      * @param boolean $append
      */
-    public function __construct($blacklists = null, $append = false) {
+    public function __construct(array $blacklists = null, bool $append = false) {
         if (is_array($blacklists)) {
             if(!$append) {
                 $this->blackLists = $blacklists;
@@ -122,7 +122,7 @@ class Dnsbl
     public function addBlacklist($blacklist) {
         try {
             $this->validateBlacklist($blacklist);
-            array_push($this->blackLists, $blacklist);
+            $this->blackLists[] = $blacklist;
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException($e->getMessage());
         }
@@ -133,7 +133,8 @@ class Dnsbl
      *
      * @return array
      */
-    public function getBlackLists() {
+    public function getBlackLists(): array
+    {
         return $this->blackLists;
     }
 
@@ -144,7 +145,8 @@ class Dnsbl
      * @param string $lookupIp
      * @return string
      */
-    public function reverseIp($lookupIp) {
+    public function reverseIp($lookupIp): string
+    {
         $this->validateIp($lookupIp);
         $parts = explode('.', $lookupIp);
         return implode('.', array_reverse($parts));
@@ -158,7 +160,8 @@ class Dnsbl
      * @param string $type
      * @return array
      */
-    public function lookup($lookupIp, $type='A') {
+    public function lookup($lookupIp, $type='A'): array
+    {
         $result = array();
         foreach ($this->blackLists as $bl) {
             try {
@@ -179,26 +182,25 @@ class Dnsbl
      * validates the given ip
      *
      * @param string $lookupIp
-     * @return bool
+     * @return true
      * @throws \InvalidArgumentException
      */
-    private function validateIp($lookupIp) {
+    private function validateIp(string $lookupIp): bool
+    {
         $valid = filter_var($lookupIp, FILTER_VALIDATE_IP);
         if (!$valid) {
             throw new \InvalidArgumentException(sprintf('"%s" is not a valid ip address!', $lookupIp));
         }
+        return true;
     }
 
     /**
      * @param string $blacklist
      * @throws \InvalidArgumentException
      */
-    private function validateBlacklist($blacklist) {
+    private function validateBlacklist(string $blacklist) {
         if (filter_var($blacklist, FILTER_VALIDATE_URL)) {
             throw new \InvalidArgumentException('It`s not allowed to use http or https in blacklist name!');
-        }
-        if (!is_string($blacklist)) {
-            throw new \InvalidArgumentException('Blacklist has to be a string!');
         }
     }
 }
