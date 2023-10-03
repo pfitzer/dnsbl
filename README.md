@@ -1,4 +1,4 @@
-[![Code Climate](https://codeclimate.com/github/pfitzer/dnsbl/badges/gpa.svg)](https://codeclimate.com/github/pfitzer/dnsbl) [![Issue Count](https://codeclimate.com/github/pfitzer/dnsbl/badges/issue_count.svg)](https://codeclimate.com/github/pfitzer/dnsbl) [![Packagist](https://img.shields.io/packagist/v/pfitzer/dnsbl.svg?maxAge=2592000)](https://packagist.org/packages/pfitzer/dnsbl)
+[![CI](https://github.com/pfitzer/dnsbl/actions/workflows/test.yml/badge.svg)](https://github.com/pfitzer/dnsbl/actions/workflows/test.yml) [![Code Climate](https://codeclimate.com/github/pfitzer/dnsbl/badges/gpa.svg)](https://codeclimate.com/github/pfitzer/dnsbl) [![Issue Count](https://codeclimate.com/github/pfitzer/dnsbl/badges/issue_count.svg)](https://codeclimate.com/github/pfitzer/dnsbl) [![Packagist](https://img.shields.io/packagist/v/pfitzer/dnsbl.svg?maxAge=2592000)](https://packagist.org/packages/pfitzer/dnsbl)
 
 
 ## DNSBL
