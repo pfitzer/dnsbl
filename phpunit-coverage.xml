@@ -7,6 +7,12 @@
             <directory>tests</directory>
         </testsuite>
     </testsuites>
+    <coverage>
+        <report>
+            <clover outputFile="./reports/coverage.xml"/>
+            <html outputDirectory="./reports/coverage/php" lowUpperBound="35" highLowerBound="80"/>
+        </report>
+    </coverage>
     <source>
         <include>
             <directory suffix=".php">src</directory>
