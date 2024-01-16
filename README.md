@@ -34,5 +34,6 @@ composer install
 ```
 #### run unit tests
 ```
-phpunit --configuration phpunit.xml
+docker build -t dnsbl
+docker run --rm dnsbl
 ```
