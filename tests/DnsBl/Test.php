@@ -22,9 +22,11 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 use InvalidArgumentException;
 use phpmock\mockery\PHPMockery;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use phpmock\phpunit\PHPMock;
 
+#[CoversClass(Dnsbl::class)]
 class DnsblTest extends TestCase {
 
     use PHPMock;
@@ -85,11 +87,24 @@ class DnsblTest extends TestCase {
      * @preserveGlobalState disabled
      */
     function testLookup() {
-        $dnsrr = PHPMockery::mock(__NAMESPACE__, 'checkdnsrr')->andReturn(true);
-        # $dnsrr->expects($this->once())->willReturn(true);
-        $dnsbl = new Dnsbl(array('foo.bar.com'));
-        $res = $dnsbl->lookup('127.0.0.1');
-        $this->assertEquals(array('foo.bar.com' => true), $res);
+        $dnsbl = new Dnsbl();
+        $expectedResult = [
+            'all.s5h.net' => false,
+            'b.barracudacentral.org' => false,
+            //Other blacklists go here
+        ];
+
+        $lookupMethodResult = $dnsbl->lookup('8.8.8.8', 'A');
+
+        //Assert each provider returned a boolean
+        foreach($lookupMethodResult as $provider => $isListed) {
+            $this->assertIsBool($isListed);
+        }
+
+        //Assert the expected providers are being checked
+        foreach($expectedResult as $provider => $expectedListed) {
+            $this->assertArrayHasKey($provider, $lookupMethodResult, "The provider $provider was not included in the lookup method result.");
+        }
     }
 
     /**
